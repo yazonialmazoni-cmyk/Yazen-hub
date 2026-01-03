@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Yazen Hub – Local Links</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background:#0b0b14;
+    color:#fff;
+  }
+  h1 {
+    text-align:center;
+    margin:20px 0;
+    font-size:2.5em;
+    background: linear-gradient(90deg, #8C5AFF, #3CA0FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  #container {
+    width:90%;
+    max-width:900px;
+    margin:0 auto 50px;
+  }
+  .link-card {
+    background: linear-gradient(135deg, rgba(140,90,255,0.2), rgba(60,160,255,0.2));
+    padding:18px 25px;
+    margin-bottom:15px;
+    border-radius:15px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 15px rgba(100,100,255,0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+  .link-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(140,90,255,0.4);
+  }
+  .link-card b { color:#fff; }
+  .timestamp { font-size:0.85em; color:#ccc; margin-top:5px; }
+  footer {
+    text-align:center;
+    padding:15px;
+    color:#888;
+    font-size:0.9em;
+  }
+  #inputArea {
+    width:90%;
+    max-width:900px;
+    margin:10px auto;
+    display:flex;
+    gap:10px;
+  }
+  #linkInput {
+    flex:1;
+    padding:10px 15px;
+    border-radius:12px;
+    border:none;
+    font-size:1em;
+    background:#1a1a28;
+    color:#fff;
+  }
+  #addBtn {
+    padding:10px 20px;
+    border:none;
+    border-radius:12px;
+    background: linear-gradient(90deg, #8C5AFF, #3CA0FF);
+    color:#fff;
+    cursor:pointer;
+    font-weight:bold;
+    transition: transform 0.2s;
+  }
+  #addBtn:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+
+<h1>Yazen Hub – Local Links</h1>
+
+<div id="inputArea">
+  <input type="text" id="linkInput" placeholder="Paste private server link here..." />
+  <button id="addBtn">ADD LINK</button>
+</div>
+
+<div id="container"></div>
+
+<footer>Newest links appear on top</footer>
+
+<script>
+  const container = document.getElementById("container");
+  const addBtn = document.getElementById("addBtn");
+  const input = document.getElementById("linkInput");
+
+  const links = [];
+
+  function addLink(linkText) {
+    if(!linkText) return;
+    const time = new Date();
+    links.unshift({link: linkText, time});
+    renderLinks();
+  }
+
+  function renderLinks() {
+    container.innerHTML = "";
+    links.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "link-card";
+      card.innerHTML = `
+        <div><b>Link:</b> ${item.link}</div>
+        <div class="timestamp">${item.time.toLocaleString()}</div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  addBtn.addEventListener("click", () => {
+    addLink(input.value);
+    input.value = "";
+  });
+
+  input.addEventListener("keypress", (e) => {
+    if(e.key === "Enter") {
+      addLink(input.value);
+      input.value = "";
+    }
+  });
+</script>
+
+</body>
+</html>
